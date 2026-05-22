@@ -3,1058 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DentScribble - Premium Dentist Sketch Notebooks & Portfolio</title>
-    <!-- Tailwind CSS -->
+    <title>Modern Calculator</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        hand: ['Architects Daughter', 'cursive'],
-                        serif: ['Lora', 'serif'],
-                    },
-                    colors: {
-                        parchment: {
-                            50: '#FDFCF7',
-                            100: '#FAF6EB',
-                            200: '#F3EAD3',
-                            300: '#E6D5B3',
-                        },
-                        dental: {
-                            slate: '#2C3E50',
-                            teal: '#1abc9c',
-                            mint: '#A2D2C8',
-                            gold: '#C5A880',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Custom subtle paper texture pattern */
-        .paper-texture {
-            background-color: #fdfbf7;
-            background-image: radial-gradient(#e5dec9 1px, transparent 0), radial-gradient(#e5dec9 1px, transparent 0);
-            background-size: 24px 24px;
-            background-position: 0 0, 12px 12px;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .sketch-grid {
-            background-size: 20px 20px;
-            background-image: linear-gradient(to right, rgba(197, 168, 128, 0.1) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(197, 168, 128, 0.1) 1px, transparent 1px);
+        .calc-btn {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .notebook-spine {
-            box-shadow: -10px 0 15px -5px rgba(0,0,0,0.3) inset, 5px 0 10px rgba(0,0,0,0.15);
+        .calc-btn:active {
+            transform: scale(0.92);
         }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        /* Hide scrollbar for history list */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-        ::-webkit-scrollbar-track {
-            background: #F5EFE6;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #C5A880;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #A0845B;
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="bg-[#F6F3EB] text-gray-800 font-sans antialiased selection:bg-dental-mint">
+<body class="bg-slate-50 dark:bg-slate-950 min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
 
-    <!-- NAVIGATION -->
-    <nav class="sticky top-0 z-50 bg-[#FAF6EB]/90 backdrop-blur-md border-b border-parchment-300">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-dental-slate flex items-center justify-center text-white font-hand text-xl shadow-md">
-                    D
-                </div>
-                <div>
-                    <span class="font-serif text-xl font-bold tracking-wide text-dental-slate block leading-tight">DentScribble</span>
-                    <span class="text-xs tracking-widest text-dental-gold uppercase font-semibold">Artist & Dentist Notebooks</span>
-                </div>
-            </div>
-            
-            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
-                <a href="#about" class="hover:text-dental-gold transition-colors">The Vision</a>
-                <a href="#portfolio" class="hover:text-dental-gold transition-colors">Sketch Gallery</a>
-                <a href="#interactive" class="hover:text-dental-gold transition-colors">Interactive Anatomizer</a>
-                <a href="#configurator" class="hover:text-dental-gold transition-colors">Design Your Notebook</a>
-                <a href="#contact" class="hover:text-dental-gold transition-colors">Custom Orders</a>
-            </div>
-
-            <a href="#configurator" class="bg-dental-slate text-white text-xs font-bold tracking-widest uppercase py-3 px-6 rounded-lg hover:bg-dental-gold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                Customize Book
-            </a>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <header class="relative overflow-hidden py-16 md:py-24 border-b border-parchment-300">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            <!-- Left Narrative -->
-            <div class="lg:col-span-5 space-y-6">
-                <span class="inline-block bg-dental-mint/30 text-dental-slate border border-dental-mint px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    Fine Art Meets Clinical Precision
-                </span>
-                <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-dental-slate leading-tight">
-                    Where medicine is studied by <span class="italic text-dental-gold font-semibold">hand</span>.
-                </h1>
-                <p class="text-gray-600 leading-relaxed text-base md:text-lg">
-                    Discover hand-bound, premium sketch notebooks meticulously configured for dental professionals, researchers, and students. Merging raw graphite aesthetics with impeccable clinical accuracy.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="#portfolio" class="bg-dental-slate text-white font-semibold text-center px-6 py-3.5 rounded-lg hover:bg-dental-gold transition-all shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-book-open text-xs"></i> View Portfolio Sketches
-                    </a>
-                    <a href="#interactive" class="border border-dental-slate/30 text-dental-slate font-semibold text-center px-6 py-3.5 rounded-lg hover:bg-[#FAF6EB] hover:border-dental-slate transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> Interactive Demo
-                    </a>
-                </div>
-            </div>
-
-            <!-- Right Interactive Book Display -->
-            <div class="lg:col-span-7 flex justify-center items-center">
-                <div class="relative w-full max-w-lg aspect-[4/3] flex items-center justify-center">
-                    <!-- Background shadows/decorations -->
-                    <div class="absolute inset-0 bg-dental-mint/10 rounded-3xl filter blur-3xl transform -rotate-6"></div>
-                    
-                    <!-- Interactive Notebook Mockup -->
-                    <div class="relative w-72 h-96 rounded-r-xl rounded-l-md bg-[#2C3E50] shadow-2xl transition-all duration-500 transform hover:-rotate-3 hover:scale-105 flex flex-col justify-between p-6 overflow-hidden border-l-[6px] border-[#1D2B39]" id="heroNotebook">
-                        <div class="notebook-spine absolute top-0 left-0 bottom-0 w-4 bg-black/20"></div>
-                        
-                        <!-- Embossed Dental Sketch Graphic -->
-                        <div class="flex flex-col items-center justify-center flex-grow opacity-90 transition-all duration-300" id="heroEmblemContainer">
-                            <!-- SVG Molar Sketch Outline in Gold -->
-                            <svg class="w-32 h-32 text-dental-gold/90 transition-colors" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="1.5" id="heroEmblem">
-                                <path d="M25,20 C35,15 45,25 50,25 C55,25 65,15 75,20 C85,25 85,50 80,70 C75,90 68,105 65,110 C60,115 55,100 50,90 C45,100 40,115 35,110 C32,105 25,90 20,70 C15,50 15,25 25,20 Z" stroke-dasharray="200" stroke-dashoffset="0"/>
-                                <path d="M50,25 C50,50 40,65 35,75 M50,25 C50,50 60,65 65,75" stroke-dasharray="50" stroke-dashoffset="0"/>
-                                <circle cx="35" cy="40" r="1.5" fill="currentColor"/>
-                                <circle cx="65" cy="40" r="1.5" fill="currentColor"/>
-                            </svg>
-                            <span class="mt-4 font-serif italic text-sm tracking-wider text-dental-gold text-center font-medium block" id="heroNotebookTitle">Anatomical Molar I</span>
-                        </div>
-
-                        <!-- Notebook Bottom Tag -->
-                        <div class="border-t border-white/10 pt-4 flex justify-between items-center z-10">
-                            <div>
-                                <span class="text-[10px] uppercase tracking-widest text-dental-mint block font-bold">Collector's Edition</span>
-                                <span class="text-xs text-white/60" id="heroNotebookPaper">Grid / Kraft Paper</span>
-                            </div>
-                            <span class="text-xs font-hand text-dental-gold">No. 204</span>
-                        </div>
-                    </div>
-
-                    <!-- Floating sketch paper -->
-                    <div class="absolute -bottom-6 -left-6 md:-left-12 w-48 h-32 bg-[#faf6eb] border border-parchment-300 shadow-xl rounded p-3 transform rotate-6 hover:rotate-2 transition-all duration-300 pointer-events-auto cursor-pointer" onclick="openLightbox('anatomy')">
-                        <div class="sketch-grid w-full h-full opacity-60 absolute inset-0"></div>
-                        <div class="relative z-10 flex flex-col justify-between h-full">
-                            <span class="text-[9px] font-mono tracking-widest text-gray-400">Fig 1.2 - Maxillary Molar</span>
-                            <svg class="w-16 h-16 text-slate-700 mx-auto" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1">
-                                <path d="M30,30 C40,25 45,35 50,35 C55,35 60,25 70,30 C78,35 78,55 75,70 C70,85 60,95 50,80 C40,95 30,85 25,70 C22,55 22,35 30,30 Z"/>
-                            </svg>
-                            <span class="text-[9px] font-hand text-dental-gold text-right">Dr. V. Sketchbook</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- THE VISION SECTION -->
-    <section id="about" class="py-16 max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="p-8 bg-[#FAF6EB] rounded-2xl border border-parchment-300 flex flex-col justify-between">
-            <div class="space-y-4">
-                <div class="w-12 h-12 rounded-xl bg-dental-mint/20 text-dental-slate flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-pen-nib"></i>
-                </div>
-                <h3 class="font-serif text-2xl font-bold text-dental-slate">Organic Textures</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Designed to grab carbon lead and ink instantly. Crafted from high-grain recycled sugarcane stock specifically calibrated to prevent bleeding under heavy clinical sketch pens.
-                </p>
-            </div>
-            <span class="text-xs font-hand text-dental-gold mt-6 block">01. Premium Craftsmanship</span>
-        </div>
-
-        <div class="p-8 bg-[#FAF6EB] rounded-2xl border border-parchment-300 flex flex-col justify-between">
-            <div class="space-y-4">
-                <div class="w-12 h-12 rounded-xl bg-dental-mint/20 text-dental-slate flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-compress"></i>
-                </div>
-                <h3 class="font-serif text-2xl font-bold text-dental-slate">Flat-Lay Spines</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Stitched signature-bound covers layout completely flat at 180°. Capture orthodontic configurations, crown designs, or notes comfortably on any operating tray or desk.
-                </p>
-            </div>
-            <span class="text-xs font-hand text-dental-gold mt-6 block">02. Functional Utility</span>
-        </div>
-
-        <div class="p-8 bg-[#FAF6EB] rounded-2xl border border-parchment-300 flex flex-col justify-between">
-            <div class="space-y-4">
-                <div class="w-12 h-12 rounded-xl bg-dental-mint/20 text-dental-slate flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-tooth"></i>
-                </div>
-                <h3 class="font-serif text-2xl font-bold text-dental-slate">Clinical Overlays</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Interleaved translucent tracing pages for layered drafting. Plan treatment overlays, implant geometries, and smile line ratios on real dental anatomy grids.
-                </p>
-            </div>
-            <span class="text-xs font-hand text-dental-gold mt-6 block">03. Hybrid Anatomy Tech</span>
-        </div>
-    </section>
-
-    <!-- INTERACTIVE TOOTH ANATOMIZER SECTION -->
-    <section id="interactive" class="py-16 bg-[#FAF6EB] border-y border-parchment-300">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
-                <span class="text-xs font-bold tracking-widest text-dental-gold uppercase">Digital Sandbox</span>
-                <h2 class="font-serif text-3xl md:text-4xl text-dental-slate">Interactive Sketch Anatomizer</h2>
-                <p class="text-gray-600 text-sm md:text-base">
-                    Test your sketching accuracy. Select components of the anatomical molar sketch below to see how clinical records and schematic notebooks label and render anatomy.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                <!-- Anatomy Sketch Canvas Display -->
-                <div class="lg:col-span-7 bg-[#FDFCF7] border border-parchment-300 rounded-2xl p-6 md:p-8 shadow-inner relative flex flex-col justify-between overflow-hidden">
-                    <div class="sketch-grid absolute inset-0 opacity-40"></div>
-                    
-                    <div class="relative z-10 flex justify-between items-center mb-6">
-                        <span class="text-xs font-mono tracking-widest text-dental-gold">SKETCH LAYOUT: MOLAR-01B</span>
-                        <div class="flex space-x-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                        </div>
-                    </div>
-
-                    <!-- Interactive Molar SVG Graphic -->
-                    <div class="relative z-10 flex justify-center items-center py-8">
-                        <svg class="w-72 h-80 text-dental-slate" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <!-- Background Grid Elements -->
-                            <line x1="50" y1="0" x2="50" y2="120" stroke="#C5A880" stroke-width="0.5" stroke-dasharray="4,4" />
-                            <line x1="0" y1="60" x2="100" y2="60" stroke="#C5A880" stroke-width="0.5" stroke-dasharray="4,4" />
-                            
-                            <!-- Interactive Enamel Area (Outer Crown Top) -->
-                            <path id="part-enamel" onclick="highlightPart('enamel')" class="cursor-pointer transition-all duration-300 hover:fill-dental-mint/20 hover:stroke-dental-teal" d="M 25 25 C 25 25 35 15 50 25 C 65 15 75 25 75 25 C 80 30 83 45 80 55 C 70 55 30 55 20 55 C 17 45 20 30 25 25 Z" />
-                            
-                            <!-- Interactive Dentin Area (Inner Crown) -->
-                            <path id="part-dentin" onclick="highlightPart('dentin')" class="cursor-pointer transition-all duration-300 hover:fill-amber-100 hover:stroke-amber-600" d="M 28 32 C 28 32 37 25 50 32 C 63 25 72 32 72 32 C 76 36 78 48 76 55 C 65 55 35 55 24 55 C 22 48 24 36 28 32 Z" />
-                            
-                            <!-- Pulp Cavity (Center Soft Tissue) -->
-                            <path id="part-pulp" onclick="highlightPart('pulp')" class="cursor-pointer transition-all duration-300 hover:fill-red-100 hover:stroke-red-600" d="M 40 45 C 45 42 55 42 60 45 C 62 52 58 65 58 75 C 58 75 54 70 50 70 C 46 70 42 75 42 75 C 42 65 38 52 40 45 Z" />
-                            
-                            <!-- Root & Canals -->
-                            <path id="part-roots" onclick="highlightPart('roots')" class="cursor-pointer transition-all duration-300 hover:fill-blue-50 hover:stroke-blue-600" d="M 20 55 L 24 55 C 24 55 26 75 22 95 C 20 105 34 105 32 90 C 30 80 34 70 36 65 C 38 68 41 71 42 75 C 42 85 45 105 48 112 C 51 112 55 108 55 90 C 55 80 58 72 58 75 C 59 71 62 68 64 65 C 66 70 70 80 68 90 C 66 105 80 105 78 95 C 74 75 76 55 80 55 L 76 55 C 76 55 74 75 70 85 C 67 92 63 80 62 72 C 62 72 58 100 50 102 C 42 100 38 72 38 72 C 37 80 33 92 30 85 C 26 75 24 55 20 55 Z" />
-                        </svg>
-                    </div>
-
-                    <div class="relative z-10 flex justify-between items-center text-xs text-gray-500 font-mono">
-                        <span>Click parts on diagram to analyze</span>
-                        <span>Plate No. 04</span>
-                    </div>
-                </div>
-
-                <!-- Info Sketchbook Details Page (Right) -->
-                <div class="lg:col-span-5 bg-white border border-parchment-300 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
-                    <div class="space-y-6">
-                        <div class="border-b border-gray-100 pb-4">
-                            <h4 class="font-hand text-2xl text-dental-gold mb-1" id="selected-title">Outer Enamel Molar</h4>
-                            <span class="text-xs font-bold tracking-wider text-dental-slate uppercase" id="selected-latin">Substantia adamantina</span>
-                        </div>
-
-                        <!-- Handwritten Notes Panel -->
-                        <div class="space-y-4 font-serif text-sm italic text-gray-700 leading-relaxed bg-parchment-50 p-4 rounded-xl border border-parchment-200">
-                            <p id="selected-desc">
-                                The enamel is the highly mineralized protective outer layer of the anatomical crown. Under hand-sketch rendering, shade the curves densely using 4B carbon to express the structural curvature & light refraction points.
-                            </p>
-                            <div class="space-y-2 pt-2 border-t border-parchment-200 text-xs font-mono not-italic text-gray-500">
-                                <div class="flex justify-between">
-                                    <span>Hardi-scale Hardness:</span>
-                                    <span id="selected-stat-1" class="font-bold text-dental-slate">96% Mineralized</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>Drafting Technique:</span>
-                                    <span id="selected-stat-2" class="font-bold text-dental-slate">Stippling & Hatching</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sketch Tips -->
-                        <div class="p-4 bg-dental-slate text-white rounded-xl space-y-2">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-dental-mint">Designer's Sketch Tip</span>
-                            <p class="text-xs text-gray-200 leading-relaxed" id="selected-tip">
-                                When detailing the enamel layer on our high-density sugarcane notebook paper, use feather-light, curved directional strokes along the prism trajectories.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-4 gap-2 pt-4 border-t border-gray-100">
-                        <button onclick="highlightPart('enamel')" class="part-btn active-part py-2 text-center text-xs font-semibold rounded-lg bg-dental-slate text-white border transition-all" id="btn-enamel">Enamel</button>
-                        <button onclick="highlightPart('dentin')" class="part-btn py-2 text-center text-xs font-semibold rounded-lg bg-gray-50 text-gray-600 border border-gray-100 hover:bg-gray-100 transition-all" id="btn-dentin">Dentin</button>
-                        <button onclick="highlightPart('pulp')" class="part-btn py-2 text-center text-xs font-semibold rounded-lg bg-gray-50 text-gray-600 border border-gray-100 hover:bg-gray-100 transition-all" id="btn-pulp">Pulp</button>
-                        <button onclick="highlightPart('roots')" class="part-btn py-2 text-center text-xs font-semibold rounded-lg bg-gray-50 text-gray-600 border border-gray-100 hover:bg-gray-100 transition-all" id="btn-roots">Roots</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PORTFOLIO / GALLERY SECTION -->
-    <section id="portfolio" class="py-16 max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div class="space-y-3">
-                <span class="text-xs font-bold tracking-widest text-dental-gold uppercase">Artist's Portfolio</span>
-                <h2 class="font-serif text-3xl md:text-4xl text-dental-slate">Notebook Specimen Galleries</h2>
-                <p class="text-gray-600 max-w-md text-sm md:text-base">
-                    Explore real graphite and dry-wash charcoal notebook studies created on our custom media.
-                </p>
-            </div>
-            
-            <!-- Category Filter Controls -->
-            <div class="flex flex-wrap gap-2 mt-6 md:mt-0 overflow-x-auto pb-2">
-                <button onclick="filterGallery('all')" class="gallery-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border border-dental-slate bg-dental-slate text-white transition-all">All Studies</button>
-                <button onclick="filterGallery('anatomy')" class="gallery-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border border-gray-200 text-gray-600 hover:border-dental-slate transition-all">Anatomy</button>
-                <button onclick="filterGallery('ortho')" class="gallery-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border border-gray-200 text-gray-600 hover:border-dental-slate transition-all">Orthodontic</button>
-                <button onclick="filterGallery('vintage')" class="gallery-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border border-gray-200 text-gray-600 hover:border-dental-slate transition-all">Vintage Dental</button>
-            </div>
-        </div>
-
-        <!-- Gallery Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Card 1 -->
-            <div class="gallery-card anatomy group bg-white border border-parchment-300 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                <div class="relative aspect-[4/3] bg-parchment-100 flex items-center justify-center p-8 overflow-hidden border-b border-parchment-200">
-                    <div class="sketch-grid absolute inset-0 opacity-40"></div>
-                    <!-- Detailed dental SVG -->
-                    <svg class="w-40 h-40 text-slate-700/80 transition-transform duration-500 group-hover:scale-105" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2">
-                        <path d="M25,25 C35,20 45,30 50,30 C55,30 65,20 75,25 C82,30 85,55 78,75 L22,75 C15,55 18,30 25,25 Z"/>
-                        <path d="M 50,30 L 50,75 M 35,28 L 35,75 M 65,28 L 65,75"/>
-                        <path d="M 15,75 C 25,70 75,70 85,75 L 80,95 C 65,90 35,90 20,95 Z" stroke-dasharray="2,2"/>
-                        <line x1="22" y1="75" x2="20" y2="95" />
-                        <line x1="78" y1="75" x2="80" y2="95" />
-                    </svg>
-                    <span class="absolute bottom-3 left-4 text-[10px] font-mono tracking-widest text-dental-gold font-semibold uppercase">Specimen #A-4</span>
-                    <button onclick="openLightbox('anatomy')" class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full text-dental-slate shadow-md transition-all">
-                        <i class="fa-solid fa-expand text-xs"></i>
-                    </button>
-                </div>
-                <div class="p-6 space-y-2">
-                    <span class="text-[10px] uppercase font-bold text-dental-teal tracking-wider">Macillary Molar Anatomy</span>
-                    <h3 class="font-serif text-lg font-bold text-dental-slate">Graphite Root Specimen IV</h3>
-                    <p class="text-xs text-gray-500 line-clamp-2">Detailed mapping of multiple root channels with graphite shading, emphasizing periodontal ligament gaps.</p>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="gallery-card ortho group bg-white border border-parchment-300 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                <div class="relative aspect-[4/3] bg-parchment-100 flex items-center justify-center p-8 overflow-hidden border-b border-parchment-200">
-                    <div class="sketch-grid absolute inset-0 opacity-40"></div>
-                    <!-- Detailed dental SVG -->
-                    <svg class="w-48 h-48 text-slate-700/80 transition-transform duration-500 group-hover:scale-105" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2">
-                        <path d="M 10,50 Q 50,15 90,50 Q 50,85 10,50 Z" stroke-dasharray="3,3" stroke="#C5A880"/>
-                        <!-- Teethes in curved orientation -->
-                        <rect x="20" y="38" width="10" height="12" rx="2" transform="rotate(-20 20 38)" />
-                        <rect x="35" y="30" width="12" height="14" rx="2" transform="rotate(-10 35 30)" />
-                        <rect x="52" y="30" width="12" height="14" rx="2" transform="rotate(10 52 30)" />
-                        <rect x="70" y="38" width="10" height="12" rx="2" transform="rotate(20 70 38)" />
-                        <!-- Braces wires -->
-                        <path d="M 15,48 Q 50,34 85,48" stroke="#1abc9c" stroke-width="2"/>
-                        <rect x="23" y="44" width="4" height="4" fill="#C5A880"/>
-                        <rect x="39" y="38" width="4" height="4" fill="#C5A880"/>
-                        <rect x="56" y="38" width="4" height="4" fill="#C5A880"/>
-                        <rect x="72" y="44" width="4" height="4" fill="#C5A880"/>
-                    </svg>
-                    <span class="absolute bottom-3 left-4 text-[10px] font-mono tracking-widest text-dental-gold font-semibold uppercase">Specimen #O-9</span>
-                    <button onclick="openLightbox('ortho')" class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full text-dental-slate shadow-md transition-all">
-                        <i class="fa-solid fa-expand text-xs"></i>
-                    </button>
-                </div>
-                <div class="p-6 space-y-2">
-                    <span class="text-[10px] uppercase font-bold text-dental-teal tracking-wider">Orthodontic Geometries</span>
-                    <h3 class="font-serif text-lg font-bold text-dental-slate">Arch Alignment Wire Study</h3>
-                    <p class="text-xs text-gray-500 line-clamp-2">Mathematical and geometric mapping of force vector lines with a steel-gray blue watercolor overlay.</p>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="gallery-card vintage group bg-white border border-parchment-300 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                <div class="relative aspect-[4/3] bg-parchment-100 flex items-center justify-center p-8 overflow-hidden border-b border-parchment-200">
-                    <div class="sketch-grid absolute inset-0 opacity-40"></div>
-                    <!-- Detailed dental SVG -->
-                    <svg class="w-40 h-40 text-slate-700/80 transition-transform duration-500 group-hover:scale-105" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1">
-                        <!-- Ancient Key Extraction Tool -->
-                        <path d="M 15,30 L 35,30 M 35,20 L 35,80 M 35,50 L 80,50 L 85,40 L 75,35" stroke="currentColor" stroke-width="2" />
-                        <ellipse cx="15" cy="30" rx="3" ry="10" fill="none" stroke="currentColor" />
-                        <path d="M 80,50 C 85,60 70,65 65,55" />
-                        <!-- Decorative vintage swirl -->
-                        <path d="M 45,70 Q 50,85 65,75 T 85,85" stroke="#C5A880" stroke-width="1" />
-                    </svg>
-                    <span class="absolute bottom-3 left-4 text-[10px] font-mono tracking-widest text-dental-gold font-semibold uppercase">Specimen #V-11</span>
-                    <button onclick="openLightbox('vintage')" class="absolute top-4 right-4 bg-white/80 hover:bg-white p-2 rounded-full text-dental-slate shadow-md transition-all">
-                        <i class="fa-solid fa-expand text-xs"></i>
-                    </button>
-                </div>
-                <div class="p-6 space-y-2">
-                    <span class="text-[10px] uppercase font-bold text-dental-teal tracking-wider">Vintage Instruments</span>
-                    <h3 class="font-serif text-lg font-bold text-dental-slate">18th Century Dental Key Sketch</h3>
-                    <p class="text-xs text-gray-500 line-clamp-2">Rendered in dry charcoal chalk on vintage toned card stock, highlighting old metal craftsmanship and wear mechanics.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PORTFOLIO DETAILED LIGHTBOX MODAL -->
-    <div id="portfolioLightbox" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 hidden backdrop-blur-sm">
-        <div class="relative bg-[#FAF6EB] max-w-4xl w-full rounded-2xl overflow-hidden border border-parchment-300 shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
-            <button onclick="closeLightbox()" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition-all">
-                <i class="fa-solid fa-times text-lg"></i>
+    <div class="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800/80 overflow-hidden flex flex-col h-[720px] transition-all duration-300">
+        
+        <!-- Header Controls -->
+        <div class="flex items-center justify-between px-6 pt-6 pb-2 z-10">
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200" title="Toggle Theme">
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
             </button>
-            
-            <!-- Large Sketch View -->
-            <div class="w-full md:w-3/5 bg-parchment-100 p-8 flex items-center justify-center relative border-r border-parchment-200">
-                <div class="sketch-grid absolute inset-0 opacity-40"></div>
-                <div id="lightboxSVG" class="w-full aspect-square flex items-center justify-center">
-                    <!-- SVG gets inserted here dynamically -->
-                </div>
-            </div>
 
-            <!-- Details Panel -->
-            <div class="w-full md:w-2/5 p-8 flex flex-col justify-between overflow-y-auto">
-                <div class="space-y-6">
-                    <div>
-                        <span id="lightboxCategory" class="text-xs font-bold text-dental-teal uppercase tracking-widest">Category</span>
-                        <h3 id="lightboxTitle" class="font-serif text-2xl font-bold text-dental-slate mt-1">Sketch Title</h3>
-                        <span id="lightboxSpecimen" class="text-xs font-mono text-dental-gold block mt-1">Specimen #</span>
-                    </div>
+            <!-- Title -->
+            <span class="text-xs font-semibold tracking-widest text-slate-400 dark:text-slate-500 uppercase">Gunt AI Calc</span>
 
-                    <p id="lightboxDesc" class="text-gray-600 text-sm leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
+            <!-- History Toggle -->
+            <button id="history-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 relative" title="History">
+                <i data-lucide="history" class="w-5 h-5"></i>
+                <span id="history-badge" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-indigo-500 rounded-full hidden"></span>
+            </button>
+        </div>
 
-                    <div class="space-y-3 bg-parchment-50 p-4 rounded-xl border border-parchment-200 text-xs">
-                        <span class="font-semibold text-dental-slate block uppercase tracking-wider">Historical Context & Media</span>
-                        <div class="flex justify-between border-b border-parchment-200 pb-1.5 text-gray-500">
-                            <span>Original Tonal Medium:</span>
-                            <span id="lightboxMedium" class="font-medium text-dental-slate">Carbon Ink / Watercolor</span>
-                        </div>
-                        <div class="flex justify-between border-b border-parchment-200 pb-1.5 text-gray-500">
-                            <span>Notebook Recommendation:</span>
-                            <span id="lightboxRec" class="font-medium text-dental-slate">Cream Grid Layflat</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Display Area -->
+        <div class="flex-1 flex flex-col justify-end items-end px-6 pb-4 select-none">
+            <!-- Previous calculation/expression -->
+            <div id="expression" class="text-slate-400 dark:text-slate-500 text-lg font-medium tracking-wide min-h-[1.75rem] max-w-full overflow-x-auto whitespace-nowrap no-scrollbar mb-1"></div>
+            <!-- Main Input/Result -->
+            <div id="display" class="text-slate-800 dark:text-slate-100 text-5xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150">0</div>
+        </div>
 
-                <div class="mt-8 pt-6 border-t border-parchment-200 flex items-center justify-between">
-                    <div>
-                        <span class="text-[10px] text-gray-500 block uppercase">Original Art Price</span>
-                        <span class="text-xl font-bold text-dental-slate">$145.00</span>
-                    </div>
-                    <button class="bg-dental-slate text-white text-xs font-bold tracking-widest uppercase py-3 px-6 rounded-lg hover:bg-dental-gold transition-all" onclick="buyArtPiece()">
-                        Enquire Print
+        <!-- Sliding History Panel -->
+        <div id="history-panel" class="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md transform translate-y-full transition-transform duration-300 ease-out z-20 flex flex-col">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-800">
+                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                    <i data-lucide="history" class="w-5 h-5 text-indigo-500"></i> History
+                </h3>
+                <div class="flex gap-2">
+                    <button id="clear-history" class="text-xs font-semibold text-rose-500 hover:text-rose-600 dark:text-rose-400 dark:hover:text-rose-300 px-3 py-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all">
+                        Clear All
+                    </button>
+                    <button id="close-history" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                        <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
             </div>
+            <div id="history-list" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
+                <!-- Items injected dynamically -->
+                <div class="text-center text-slate-400 dark:text-slate-500 my-auto py-12">
+                    <i data-lucide="archive" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
+                    No calculations yet
+                </div>
+            </div>
         </div>
+
+        <!-- Buttons Panel / Grid -->
+        <div class="bg-slate-50/80 dark:bg-slate-900/40 border-t border-slate-100 dark:border-slate-800 p-6 grid grid-cols-4 gap-3.5">
+            <!-- Row 1: Memory & Helpers -->
+            <button onclick="clearDisplay()" class="calc-btn col-span-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold text-xl rounded-2xl py-4 flex items-center justify-center">AC</button>
+            <button onclick="backspace()" class="calc-btn bg-slate-200/50 hover:bg-slate-200 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium text-xl rounded-2xl py-4 flex items-center justify-center">
+                <i data-lucide="delete" class="w-6 h-6"></i>
+            </button>
+            <button onclick="inputPercent()" class="calc-btn bg-slate-200/50 hover:bg-slate-200 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium text-xl rounded-2xl py-4 flex items-center justify-center">%</button>
+            <button onclick="inputOperator('/')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">÷</button>
+
+            <!-- Row 2 -->
+            <button onclick="inputNum('7')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">7</button>
+            <button onclick="inputNum('8')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">8</button>
+            <button onclick="inputNum('9')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">9</button>
+            <button onclick="inputOperator('*')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">×</button>
+
+            <!-- Row 3 -->
+            <button onclick="inputNum('4')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">4</button>
+            <button onclick="inputNum('5')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">5</button>
+            <button onclick="inputNum('6')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">6</button>
+            <button onclick="inputOperator('-')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">−</button>
+
+            <!-- Row 4 -->
+            <button onclick="inputNum('1')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">1</button>
+            <button onclick="inputNum('2')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">2</button>
+            <button onclick="inputNum('3')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">3</button>
+            <button onclick="inputOperator('+')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">+</button>
+
+            <!-- Row 5 -->
+            <button onclick="toggleSign()" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">±</button>
+            <button onclick="inputNum('0')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">0</button>
+            <button onclick="inputDecimal()" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">.</button>
+            <button onclick="calculate()" class="calc-btn bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white font-bold text-3xl rounded-2xl py-4 flex items-center justify-center shadow-lg shadow-indigo-500/30 dark:shadow-indigo-500/20">=</button>
+        </div>
+
     </div>
 
-    <!-- NOTEBOOK CUSTOMIZER / CONFIGURATOR SECTION -->
-    <section id="configurator" class="py-16 bg-[#FAF6EB] border-t border-parchment-300">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
-                <span class="text-xs font-bold tracking-widest text-dental-gold uppercase">Customizer Studio</span>
-                <h2 class="font-serif text-3xl md:text-4xl text-dental-slate">Configure Your Medical Notebook</h2>
-                <p class="text-gray-600 text-sm md:text-base">
-                    Tailor your cover, layout styles, spine materials, and embossing details designed specifically for clinic notes.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                
-                <!-- Live Preview Block (3D Book Card) (6 cols) -->
-                <div class="lg:col-span-6 flex flex-col items-center justify-center p-8 bg-white border border-parchment-300 rounded-2xl relative shadow-md">
-                    <span class="absolute top-4 left-4 text-[10px] font-mono tracking-widest text-gray-400">LIVE NOTEBOOK BUILD</span>
-                    
-                    <!-- 3D Book Layout wrapper -->
-                    <div class="relative w-64 h-80 my-8 transition-transform duration-500" style="perspective: 1000px;">
-                        <div id="previewBookBody" class="w-full h-full rounded-r-xl rounded-l-md bg-dental-slate shadow-2xl transition-all duration-300 relative flex flex-col justify-between p-6 border-l-[6px] border-black/20" style="transform: rotateY(-15deg) rotateX(5deg);">
-                            <div class="notebook-spine absolute top-0 left-0 bottom-0 w-4 bg-black/10"></div>
-                            
-                            <!-- Ribbon Bookmark visual -->
-                            <div id="previewRibbon" class="absolute -bottom-6 left-12 w-3 h-12 bg-dental-gold rounded-b shadow-sm z-0"></div>
-
-                            <!-- Custom Emboss Emblem Container -->
-                            <div class="flex flex-col items-center justify-center flex-grow py-4 relative z-10 text-[#faf6eb]/90">
-                                <div id="previewEmblemSVG" class="w-24 h-24 mb-3 transition-colors duration-300 text-dental-gold">
-                                    <!-- Dynamic Emblem Inserted Here -->
-                                    <svg viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M25,20 C35,15 45,25 50,25 C55,25 65,15 75,20 C85,25 85,50 80,70 C75,90 68,105 65,110 C60,115 55,100 50,90 C45,100 40,115 35,110 C32,105 25,90 20,70 C15,50 15,25 25,20 Z"/>
-                                    </svg>
-                                </div>
-                                <span id="previewLabel" class="font-serif italic text-xs tracking-wider text-center text-dental-gold">Anatomical Molar I</span>
-                            </div>
-
-                            <div class="border-t border-white/10 pt-4 flex justify-between items-center z-10 text-white/50">
-                                <span id="previewGridType" class="text-[9px] uppercase tracking-widest font-bold">5mm Grid Grid</span>
-                                <span class="text-[9px] font-hand">No. 204</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Book Features/Specs Bar -->
-                    <div class="w-full grid grid-cols-3 gap-2 border-t border-parchment-200 pt-6 text-center text-xs">
-                        <div>
-                            <span class="text-[10px] uppercase text-gray-400 block">Sizing</span>
-                            <span class="font-semibold text-dental-slate">A5 (148 x 210mm)</span>
-                        </div>
-                        <div>
-                            <span class="text-[10px] uppercase text-gray-400 block">Page Count</span>
-                            <span class="font-semibold text-dental-slate">160 Pages Flatlay</span>
-                        </div>
-                        <div>
-                            <span class="text-[10px] uppercase text-gray-400 block">Lead Time</span>
-                            <span class="font-semibold text-dental-slate">3-5 Days Handbuilt</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Customizer Control Center (6 cols) -->
-                <div class="lg:col-span-6 space-y-8">
-                    <!-- Step 1: Cover Aesthetic -->
-                    <div class="space-y-3">
-                        <label class="text-xs font-bold uppercase tracking-widest text-dental-slate block">1. Cover Material / Color</label>
-                        <div class="grid grid-cols-4 gap-3">
-                            <button onclick="setCover('charcoal', '#2C3E50', 'Charcoal Leather')" class="config-btn border-2 border-dental-teal p-3 rounded-xl bg-white flex flex-col items-center justify-center space-y-1.5">
-                                <span class="w-6 h-6 rounded-full bg-[#2C3E50] border border-black/10"></span>
-                                <span class="text-[10px] font-semibold text-gray-700">Charcoal</span>
-                            </button>
-                            <button onclick="setCover('mint', '#79AFA3', 'Mint Surgical')" class="config-btn border-2 border-transparent p-3 rounded-xl bg-white flex flex-col items-center justify-center space-y-1.5 hover:border-parchment-300">
-                                <span class="w-6 h-6 rounded-full bg-[#79AFA3] border border-black/10"></span>
-                                <span class="text-[10px] font-semibold text-gray-700">Surgi-Mint</span>
-                            </button>
-                            <button onclick="setCover('kraft', '#A0845B', 'Kraft Parchment')" class="config-btn border-2 border-transparent p-3 rounded-xl bg-white flex flex-col items-center justify-center space-y-1.5 hover:border-parchment-300">
-                                <span class="w-6 h-6 rounded-full bg-[#A0845B] border border-black/10"></span>
-                                <span class="text-[10px] font-semibold text-gray-700">Kraft Raw</span>
-                            </button>
-                            <button onclick="setCover('navy', '#1A365D', 'Navy Clinical')" class="config-btn border-2 border-transparent p-3 rounded-xl bg-white flex flex-col items-center justify-center space-y-1.5 hover:border-parchment-300">
-                                <span class="w-6 h-6 rounded-full bg-[#1A365D] border border-black/10"></span>
-                                <span class="text-[10px] font-semibold text-gray-700">Navy</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Custom Embossed Emblem -->
-                    <div class="space-y-3">
-                        <label class="text-xs font-bold uppercase tracking-widest text-dental-slate block">2. Gold Foil Cover Embossing</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <button onclick="setEmblem('molar', 'Anatomical Molar')" class="emblem-btn border-2 border-dental-teal p-4 rounded-xl bg-white flex flex-col items-center justify-center space-y-2">
-                                <svg class="w-8 h-8 text-dental-gold" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M25,20 C35,15 45,25 50,25 C55,25 65,15 75,20 C85,25 85,50 80,70 C75,90 68,105 65,110 C60,115 55,100 50,90 C45,100 40,115 35,110 C32,105 25,90 20,70 C15,50 15,25 25,20 Z"/>
-                                </svg>
-                                <span class="text-[10px] font-semibold text-gray-700">Molar</span>
-                            </button>
-                            <button onclick="setEmblem('caduceus', 'Dental Caduceus')" class="emblem-btn border-2 border-transparent p-4 rounded-xl bg-white flex flex-col items-center justify-center space-y-2 hover:border-parchment-300">
-                                <svg class="w-8 h-8 text-dental-gold" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M50,15 L50,85" stroke-width="2"/>
-                                    <path d="M35,35 Q50,55 65,35 Q50,15 35,35" />
-                                    <path d="M35,55 Q50,75 65,55 Q50,35 35,55" />
-                                    <path d="M40,25 Q50,10 60,25" />
-                                </svg>
-                                <span class="text-[10px] font-semibold text-gray-700">Caduceus</span>
-                            </button>
-                            <button onclick="setEmblem('bracket', 'Ortho Blueprint')" class="emblem-btn border-2 border-transparent p-4 rounded-xl bg-white flex flex-col items-center justify-center space-y-2 hover:border-parchment-300">
-                                <svg class="w-8 h-8 text-dental-gold" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <rect x="30" y="30" width="40" height="40" rx="5" />
-                                    <path d="M15,50 L85,50 M50,15 L50,85" stroke-dasharray="3,3" />
-                                </svg>
-                                <span class="text-[10px] font-semibold text-gray-700">Ortho Align</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Paper Style & Spine Ribbon Customizer -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-3">
-                            <label class="text-xs font-bold uppercase tracking-widest text-dental-slate block">3. Internal Paper Style</label>
-                            <select id="selectPaperStyle" onchange="setPaperStyle()" class="w-full p-3 bg-white border border-parchment-300 rounded-xl text-xs font-semibold text-gray-700 focus:outline-none focus:border-dental-gold">
-                                <option value="5mm Grid / Toned Paper">5mm Grid (Recommended)</option>
-                                <option value="Isometric Tooth Grid">Isometric Grid</option>
-                                <option value="Plain Ultra-Smooth Parchment">Plain Parchment</option>
-                                <option value="Dotted Matrix Pattern">Dot Matrix</option>
-                            </select>
-                        </div>
-
-                        <div class="space-y-3">
-                            <label class="text-xs font-bold uppercase tracking-widest text-dental-slate block">4. Spine Ribbon Bookmark</label>
-                            <div class="flex space-x-2 pt-1">
-                                <button onclick="setRibbon('#C5A880')" class="w-8 h-8 rounded-full bg-[#C5A880] border border-black/10 ring-2 ring-offset-2 ring-dental-gold transition-all" id="ribbon-gold"></button>
-                                <button onclick="setRibbon('#2C3E50')" class="w-8 h-8 rounded-full bg-[#2C3E50] border border-black/10 ring-0 ring-offset-2 ring-transparent transition-all" id="ribbon-charcoal"></button>
-                                <button onclick="setRibbon('#1abc9c')" class="w-8 h-8 rounded-full bg-[#1abc9c] border border-black/10 ring-0 ring-offset-2 ring-transparent transition-all" id="ribbon-teal"></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Config Summary and Order Trigger -->
-                    <div class="p-6 bg-parchment-100 rounded-2xl border border-parchment-300 flex flex-col sm:flex-row items-center justify-between gap-6">
-                        <div>
-                            <span class="text-[10px] uppercase font-bold text-gray-400 block">Custom Build Estimate</span>
-                            <span class="text-2xl font-serif font-bold text-dental-slate">$48.00 <span class="text-xs font-sans text-gray-500 font-normal">/ notebook</span></span>
-                        </div>
-                        <button onclick="submitNotebookOrder()" class="w-full sm:w-auto bg-dental-slate text-white text-xs font-bold tracking-widest uppercase py-4 px-8 rounded-lg hover:bg-dental-gold transition-all shadow-md">
-                            Reserve Custom Book <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CUSTOM SUBMISSIONS / RESERVATION DIALOG -->
-    <section id="contact" class="py-16 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <!-- Text details -->
-        <div class="lg:col-span-5 space-y-6">
-            <span class="text-xs font-bold uppercase tracking-widest text-dental-gold">Custom Design Consultations</span>
-            <h2 class="font-serif text-3xl md:text-4xl text-dental-slate">Request Handcrafted Institutional Batches</h2>
-            <p class="text-gray-600 leading-relaxed text-sm md:text-base">
-                Looking to equip your entire clinic team, orthodontic residency batch, or medical school cohort with custom debossed logbooks? We create hand-tooled custom orders featuring university emblems, dental logos, and tailored surgical checklists.
-            </p>
-            
-            <div class="space-y-4">
-                <div class="flex items-start space-x-3">
-                    <i class="fa-solid fa-circle-check text-dental-teal mt-1"></i>
-                    <p class="text-xs text-gray-600">Minimal Order Quantity for customized layouts: 10 notebooks.</p>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <i class="fa-solid fa-circle-check text-dental-teal mt-1"></i>
-                    <p class="text-xs text-gray-600">Free layout and design mockups prepared by our dental art team.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Custom Order Form structured as notebook paper -->
-        <div class="lg:col-span-7 bg-[#FDFCF7] border border-parchment-300 shadow-xl rounded-2xl p-8 relative overflow-hidden">
-            <div class="sketch-grid absolute inset-0 opacity-30"></div>
-            
-            <div class="relative z-10 space-y-6">
-                <div class="flex justify-between items-center border-b border-parchment-200 pb-4">
-                    <span class="font-serif italic text-lg text-dental-gold">Batch Customization Form</span>
-                    <span class="text-xs text-gray-400 font-mono">Form ref: 808-A</span>
-                </div>
-
-                <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Contact Person Name</label>
-                            <input type="text" required placeholder="Dr. Sarah Jenkins" class="w-full p-3 bg-[#FAF6EB] border border-parchment-300 rounded-lg text-xs font-medium text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-dental-gold">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Professional Email Address</label>
-                            <input type="email" required placeholder="s.jenkins@dentaluniversity.edu" class="w-full p-3 bg-[#FAF6EB] border border-parchment-300 rounded-lg text-xs font-medium text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-dental-gold">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Clinic / University Name</label>
-                            <input type="text" placeholder="Metro Orthodontics Group" class="w-full p-3 bg-[#FAF6EB] border border-parchment-300 rounded-lg text-xs font-medium text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-dental-gold">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Approximate Batch Quantity</label>
-                            <input type="number" min="1" placeholder="25 Units" class="w-full p-3 bg-[#FAF6EB] border border-parchment-300 rounded-lg text-xs font-medium text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-dental-gold">
-                        </div>
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Layout Specifications & Design Requests</label>
-                        <textarea rows="4" placeholder="Briefly specify what medical/dental sketches you want pre-printed inside, custom cover engraving specifications, layout variations, etc." class="w-full p-3 bg-[#FAF6EB] border border-parchment-300 rounded-lg text-xs font-medium text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-dental-gold resize-none"></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full bg-dental-slate text-white text-xs font-bold tracking-widest uppercase py-4 rounded-lg hover:bg-dental-gold transition-all shadow-md">
-                        Submit Custom Proposal Request
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-dental-slate text-white py-12 border-t border-black/20">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="space-y-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-white text-dental-slate flex items-center justify-center font-hand text-xl font-bold">
-                        D
-                    </div>
-                    <div>
-                        <span class="font-serif text-xl font-bold tracking-wide text-white block">DentScribble</span>
-                        <span class="text-[10px] tracking-widest text-dental-mint uppercase font-semibold block">Artist & Dentist Notebooks</span>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-400 leading-relaxed">
-                    Elevating medical illustration and study notebook standards with exceptional design aesthetics, natural organic textures, and absolute clinical accuracy.
-                </p>
-            </div>
-
-            <div class="space-y-3">
-                <span class="text-xs font-bold uppercase tracking-widest text-dental-gold block">Our Products</span>
-                <ul class="space-y-2 text-xs text-gray-300">
-                    <li><a href="#configurator" class="hover:text-white transition-colors">Classic Layout Layflat</a></li>
-                    <li><a href="#configurator" class="hover:text-white transition-colors">Specialized Ortho Sketchbook</a></li>
-                    <li><a href="#configurator" class="hover:text-white transition-colors">Fine-grain Surgical Drafting Pad</a></li>
-                    <li><a href="#configurator" class="hover:text-white transition-colors">Embossed Pocket Editions</a></li>
-                </ul>
-            </div>
-
-            <div class="space-y-3">
-                <span class="text-xs font-bold uppercase tracking-widest text-dental-gold block">Resource Base</span>
-                <ul class="space-y-2 text-xs text-gray-300">
-                    <li><a href="#portfolio" class="hover:text-white transition-colors">Archived Sketch Library</a></li>
-                    <li><a href="#interactive" class="hover:text-white transition-colors">Dental Sketching Tutorials</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Media Calibration Sheets</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Recycling Initiative</a></li>
-                </ul>
-            </div>
-
-            <div class="space-y-4">
-                <span class="text-xs font-bold uppercase tracking-widest text-dental-gold block font-semibold">Join the Dental Art Lab</span>
-                <p class="text-xs text-gray-400">Get 10% off your first handcrafted layout config by joining our newsletter list.</p>
-                <div class="flex">
-                    <input type="email" placeholder="dentist@clinic.com" class="p-3 bg-white/10 border border-white/10 rounded-l-lg text-xs text-white placeholder:text-gray-500 focus:outline-none w-full">
-                    <button onclick="alert('Thank you for subscribing to our art lab!')" class="bg-dental-gold text-dental-slate font-bold px-4 rounded-r-lg text-xs hover:bg-white transition-colors">Join</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-6 border-t border-white/5 mt-10 pt-6 flex flex-col sm:flex-row justify-between text-[11px] text-gray-400 gap-4">
-            <span>&copy; <span id="currentYear"></span> DentScribble Inc. Handmade with pride in medical and architectural formats.</span>
-            <div class="flex space-x-6">
-                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-white transition-colors">Terms of Handcraft</a>
-                <a href="#" class="hover:text-white transition-colors">Contact Art Team</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JS ACTIONS -->
     <script>
-        // Setup Date
-        document.getElementById('currentYear').innerText = new Date().getFullYear();
+        // Init Lucide Icons
+        lucide.createIcons();
 
-        // 1. Interactive Anatomizer Database / State management
-        const anatomyData = {
-            enamel: {
-                title: "Outer Tooth Enamel",
-                latin: "Substantia adamantina",
-                desc: "The enamel is the highly mineralized protective outer layer of the anatomical crown. Under hand-sketch rendering, shade the curves densely using 4B carbon to express structural curvature & light refraction points.",
-                stat1: "96% Mineralized Structure",
-                stat2: "Fringe Cross-Hatching Technique",
-                tip: "When detailing the enamel layer on our high-density sugarcane notebook paper, use feather-light, curved directional strokes along the prism trajectories."
-            },
-            dentin: {
-                title: "Dentin Substance",
-                latin: "Substantia eburnea",
-                desc: "Lying directly underneath the enamel layer, dentin represents the bulk of the internal tooth frame. Rendered in sketch format using ultra-soft pencil lines running outwards radially to visualize the microscopic dentinal tubules.",
-                stat1: "70% Hydroxyapatite Compound",
-                stat2: "Radial Charcoal Fan-Stroking",
-                tip: "Keep carbon lines perfectly structured, emanating straight out from the pulp walls outwards to capture the natural bone-dense structure."
-            },
-            pulp: {
-                title: "Central Pulp Chamber",
-                latin: "Cavitas dentis",
-                desc: "The organic soft vascular center feeding the dental root framework. Under artistic rendering, keep the inner chamber boundaries softer using dry smudge pens, illustrating blood vessel and nerve bundles with fine micro-points.",
-                stat1: "Vascular Soft Tissue Matrix",
-                stat2: "Graphite Blend / Smudge-pen",
-                tip: "Use a paper tortillon or blending stump to soften charcoal values inside the pulp boundaries for a highly realistic clinical depth effect."
-            },
-            roots: {
-                title: "Root Canal Framework",
-                latin: "Canalis radicis dentis",
-                desc: "Extending down deep into the jaw bone tissue, the root canals anchor the crown. Sketch outlines must explicitly demonstrate natural root curvature variances, ligament gaps, and terminal apical foramens.",
-                stat1: "Anchored Ligament Connection",
-                stat2: "Continuous Linework Outline",
-                tip: "Avoid sharp angles. Roots have organic structural contours. Sketch using variable line weight weights, darker around stress and curves."
-            }
-        };
+        // State variables
+        let displayValue = '0';
+        let previousExpression = '';
+        let shouldResetDisplay = false;
+        let history = JSON.parse(localStorage.getItem('calcHistory')) || [];
 
-        function highlightPart(partId) {
-            // Reset SVGs highlighting states
-            const parts = ['enamel', 'dentin', 'pulp', 'roots'];
-            parts.forEach(p => {
-                const element = document.getElementById('part-' + p);
-                if(element) {
-                    element.classList.remove('fill-dental-mint/30', 'stroke-dental-teal', 'fill-amber-200/40', 'stroke-amber-600', 'fill-red-200/40', 'stroke-red-600', 'fill-blue-100/40', 'stroke-blue-600');
-                }
-                const btn = document.getElementById('btn-' + p);
-                if(btn) {
-                    btn.className = "part-btn py-2 text-center text-xs font-semibold rounded-lg bg-gray-50 text-gray-600 border border-gray-100 hover:bg-gray-100 transition-all";
-                }
-            });
+        const displayEl = document.getElementById('display');
+        const expressionEl = document.getElementById('expression');
+        const historyPanel = document.getElementById('history-panel');
+        const historyList = document.getElementById('history-list');
+        const historyBadge = document.getElementById('history-badge');
 
-            // Highlight chosen item in SVG
-            const el = document.getElementById('part-' + partId);
-            if (el) {
-                if (partId === 'enamel') el.classList.add('fill-dental-mint/30', 'stroke-dental-teal');
-                if (partId === 'dentin') el.classList.add('fill-amber-200/40', 'stroke-amber-600');
-                if (partId === 'pulp') el.classList.add('fill-red-200/40', 'stroke-red-600');
-                if (partId === 'roots') el.classList.add('fill-blue-100/40', 'stroke-blue-600');
-            }
-
-            // Highlight chosen button
-            const activeBtn = document.getElementById('btn-' + partId);
-            if(activeBtn) {
-                activeBtn.className = "part-btn py-2 text-center text-xs font-semibold rounded-lg bg-dental-slate text-white border transition-all";
-            }
-
-            // Update details panel text content
-            document.getElementById('selected-title').innerText = anatomyData[partId].title;
-            document.getElementById('selected-latin').innerText = anatomyData[partId].latin;
-            document.getElementById('selected-desc').innerText = anatomyData[partId].desc;
-            document.getElementById('selected-stat-1').innerText = anatomyData[partId].stat1;
-            document.getElementById('selected-stat-2').innerText = anatomyData[partId].stat2;
-            document.getElementById('selected-tip').innerText = anatomyData[partId].tip;
+        // Dark/Light Theme Handler
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        
+        // Detect and set theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
 
-        // Initialize state to enamel
-        highlightPart('enamel');
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
 
+        // Sliding History Panel logic
+        const historyToggleBtn = document.getElementById('history-toggle');
+        const closeHistoryBtn = document.getElementById('close-history');
+        const clearHistoryBtn = document.getElementById('clear-history');
 
-        // 2. Notebook Configurator Live Preview Logic
-        let customNotebook = {
-            coverName: "Charcoal Leather",
-            coverColor: "#2C3E50",
-            emblemId: "molar",
-            emblemTitle: "Anatomical Molar I",
-            paperStyle: "5mm Grid / Toned Paper",
-            ribbonColor: "#C5A880"
-        };
+        historyToggleBtn.addEventListener('click', () => {
+            historyPanel.classList.remove('translate-y-full');
+            updateHistoryUI();
+        });
 
-        const emblemSVGs = {
-            molar: `<svg viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M25,20 C35,15 45,25 50,25 C55,25 65,15 75,20 C85,25 85,50 80,70 C75,90 68,105 65,110 C60,115 55,100 50,90 C45,100 40,115 35,110 C32,105 25,90 20,70 C15,50 15,25 25,20 Z"/>
-                        <path d="M50,25 C50,50 40,65 35,75 M50,25 C50,50 60,65 65,75"/>
-                        <circle cx="35" cy="40" r="1.5" fill="currentColor"/>
-                        <circle cx="65" cy="40" r="1.5" fill="currentColor"/>
-                    </svg>`,
-            caduceus: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M50,15 L50,85" stroke-width="2"/>
-                        <path d="M35,35 Q50,55 65,35 Q50,15 35,35" />
-                        <path d="M35,55 Q50,75 65,55 Q50,35 35,55" />
-                        <path d="M40,25 Q50,10 60,25" />
-                    </svg>`,
-            bracket: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="30" y="30" width="40" height="40" rx="5" />
-                        <path d="M15,50 L85,50 M50,15 L50,85" stroke-dasharray="3,3" />
-                    </svg>`
-        };
+        closeHistoryBtn.addEventListener('click', () => {
+            historyPanel.classList.add('translate-y-full');
+        });
 
-        function setCover(styleKey, colorValue, styleName) {
-            customNotebook.coverName = styleName;
-            customNotebook.coverColor = colorValue;
+        clearHistoryBtn.addEventListener('click', () => {
+            history = [];
+            localStorage.setItem('calcHistory', JSON.stringify(history));
+            updateHistoryUI();
+        });
+
+        function updateHistoryBadge() {
+            if (history.length > 0) {
+                historyBadge.classList.remove('hidden');
+            } else {
+                historyBadge.classList.add('hidden');
+            }
+        }
+
+        function updateHistoryUI() {
+            updateHistoryBadge();
+            if (history.length === 0) {
+                historyList.innerHTML = `
+                    <div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 h-full py-12">
+                        <i data-lucide="archive" class="w-12 h-12 mb-3 opacity-30"></i>
+                        <p class="text-sm font-medium">No calculation history</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            historyList.innerHTML = history.map((item, index) => `
+                <div onclick="recallHistory(${index})" class="group cursor-pointer p-3.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 border border-transparent hover:border-slate-100 dark:hover:border-slate-800 transition-all text-right">
+                    <div class="text-xs text-slate-400 dark:text-slate-500 mb-1 group-hover:text-indigo-500 transition-colors duration-150">${item.expr}</div>
+                    <div class="text-lg font-bold text-slate-700 dark:text-slate-200">${item.result}</div>
+                </div>
+            `).reverse().join('');
+        }
+
+        function recallHistory(index) {
+            const item = history[index];
+            displayValue = item.result;
+            previousExpression = item.expr;
+            shouldResetDisplay = true;
+            updateDisplay();
+            historyPanel.classList.add('translate-y-full');
+        }
+
+        // Calculator Mechanics
+        function updateDisplay() {
+            // Adjust size depending on digits
+            if (displayValue.length > 15) {
+                displayEl.className = 'text-slate-800 dark:text-slate-100 text-2xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150';
+            } else if (displayValue.length > 9) {
+                displayEl.className = 'text-slate-800 dark:text-slate-100 text-3xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150';
+            } else {
+                displayEl.className = 'text-slate-800 dark:text-slate-100 text-5xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150';
+            }
+
+            // Simple visual improvements for division/multiplication in previous expression display
+            const visualExpr = previousExpression
+                .replace(/\*/g, ' × ')
+                .replace(/\//g, ' ÷ ')
+                .replace(/\+/g, ' + ')
+                .replace(/\-/g, ' − ');
+
+            expressionEl.innerText = visualExpr;
+            displayEl.innerText = displayValue.replace(/\*/g, '×').replace(/\//g, '÷');
+        }
+
+        function clearDisplay() {
+            displayValue = '0';
+            previousExpression = '';
+            shouldResetDisplay = false;
+            updateDisplay();
+        }
+
+        function backspace() {
+            if (shouldResetDisplay) {
+                clearDisplay();
+                return;
+            }
+            if (displayValue.length > 1) {
+                displayValue = displayValue.slice(0, -1);
+            } else {
+                displayValue = '0';
+            }
+            updateDisplay();
+        }
+
+        function inputPercent() {
+            try {
+                const currentVal = parseFloat(displayValue);
+                if (!isNaN(currentVal)) {
+                    displayValue = (currentVal / 100).toString();
+                    updateDisplay();
+                }
+            } catch (err) {
+                displayValue = 'Error';
+                updateDisplay();
+            }
+        }
+
+        function toggleSign() {
+            if (displayValue === '0' || displayValue === 'Error') return;
+            if (displayValue.startsWith('-')) {
+                displayValue = displayValue.slice(1);
+            } else {
+                displayValue = '-' + displayValue;
+            }
+            updateDisplay();
+        }
+
+        function inputNum(num) {
+            if (displayValue === '0' || shouldResetDisplay || displayValue === 'Error') {
+                displayValue = num;
+                shouldResetDisplay = false;
+            } else {
+                displayValue += num;
+            }
+            updateDisplay();
+        }
+
+        function inputDecimal() {
+            if (shouldResetDisplay) {
+                displayValue = '0.';
+                shouldResetDisplay = false;
+                updateDisplay();
+                return;
+            }
+            if (!displayValue.includes('.')) {
+                displayValue += '.';
+                updateDisplay();
+            }
+        }
+
+        function inputOperator(operator) {
+            const lastChar = displayValue.slice(-1);
             
-            // Update Preview HTML
-            const previewBook = document.getElementById('previewBookBody');
-            previewBook.style.backgroundColor = colorValue;
-
-            // Highlight active button selection
-            const buttons = document.querySelectorAll('.config-btn');
-            buttons.forEach(btn => btn.classList.replace('border-dental-teal', 'border-transparent'));
-            event.currentTarget.classList.replace('border-transparent', 'border-dental-teal');
-
-            // Also update the Hero Notebook as a pleasant visual dynamic link!
-            const heroBook = document.getElementById('heroNotebook');
-            if(heroBook) {
-                heroBook.style.backgroundColor = colorValue;
-                // update dark shadow spine matching
-                if(colorValue === '#79AFA3') {
-                    heroBook.style.borderColor = '#55877C';
-                } else if(colorValue === '#A0845B') {
-                    heroBook.style.borderColor = '#79603D';
-                } else if(colorValue === '#1A365D') {
-                    heroBook.style.borderColor = '#0F233F';
+            // If standard operations are clicked
+            if (shouldResetDisplay) {
+                previousExpression = displayValue + operator;
+                shouldResetDisplay = false;
+                displayValue = '0';
+            } else {
+                if (['+', '-', '*', '/'].includes(lastChar)) {
+                    displayValue = displayValue.slice(0, -1) + operator;
                 } else {
-                    heroBook.style.borderColor = '#1D2B39';
-                }
-            }
-        }
-
-        function setEmblem(emblemId, title) {
-            customNotebook.emblemId = emblemId;
-            customNotebook.emblemTitle = title;
-
-            // Update SVG
-            document.getElementById('previewEmblemSVG').innerHTML = emblemSVGs[emblemId];
-            document.getElementById('previewLabel').innerText = title;
-
-            // Update buttons
-            const buttons = document.querySelectorAll('.emblem-btn');
-            buttons.forEach(btn => btn.classList.replace('border-dental-teal', 'border-transparent'));
-            event.currentTarget.classList.replace('border-transparent', 'border-dental-teal');
-
-            // Update Hero
-            const heroEmblem = document.getElementById('heroEmblemContainer');
-            if(heroEmblem) {
-                document.getElementById('heroEmblem').outerHTML = emblemSVGs[emblemId].replace('viewBox', 'id="heroEmblem" viewBox').replace('text-dental-gold', 'text-dental-gold/90');
-                document.getElementById('heroNotebookTitle').innerText = title;
-            }
-        }
-
-        function setPaperStyle() {
-            const select = document.getElementById('selectPaperStyle');
-            customNotebook.paperStyle = select.value;
-            document.getElementById('previewGridType').innerText = select.value;
-
-            // Update Hero Notebook meta label text
-            const heroPaperLabel = document.getElementById('heroNotebookPaper');
-            if(heroPaperLabel) {
-                heroPaperLabel.innerText = select.value;
-            }
-        }
-
-        function setRibbon(colorValue) {
-            customNotebook.ribbonColor = colorValue;
-            document.getElementById('previewRibbon').style.backgroundColor = colorValue;
-
-            // Ring highlights
-            const ribbonButtons = [
-                {id: 'ribbon-gold', color: '#C5A880'},
-                {id: 'ribbon-charcoal', color: '#2C3E50'},
-                {id: 'ribbon-teal', color: '#1abc9c'}
-            ];
-            ribbonButtons.forEach(btnData => {
-                const btn = document.getElementById(btnData.id);
-                if (btn) {
-                    if (btnData.color === colorValue) {
-                        btn.className = `w-8 h-8 rounded-full border border-black/10 ring-2 ring-offset-2 ring-dental-gold transition-all`;
+                    if (previousExpression && !shouldResetDisplay) {
+                        previousExpression += displayValue + operator;
                     } else {
-                        btn.className = `w-8 h-8 rounded-full border border-black/10 ring-0 ring-offset-2 ring-transparent transition-all`;
+                        previousExpression = displayValue + operator;
                     }
+                    displayValue = '0';
                 }
-            });
-        }
-
-        function submitNotebookOrder() {
-            alert(`Reserved successfully!\n\nSpecs Registered:\n• Cover: ${customNotebook.coverName}\n• Embossing Art: ${customNotebook.emblemTitle}\n• Paper Style: ${customNotebook.paperStyle}\n• Ribbon Color ID: ${customNotebook.ribbonColor}\n\nOur fine art team will send a configuration verification invoice.`);
-        }
-
-
-        // 3. Portfolio Filters & Detailed Lightbox System
-        const portfolioDb = {
-            anatomy: {
-                title: "Graphite Root Specimen IV",
-                category: "Macillary Molar Anatomy",
-                specimen: "Specimen #A-4",
-                medium: "4B Charcoal & Dry Chalk Blend",
-                rec: "Cream Grid / Layflat Cover Design",
-                desc: "An advanced multi-angle rendering mapping the complex interior root channel geography of the upper-first molar. Beautifully captures ligament boundaries and surrounding alveolar bone sockets under fine graphite shading.",
-                svg: `<svg class="w-64 h-64 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2">
-                        <path d="M25,25 C35,20 45,30 50,30 C55,30 65,20 75,25 C82,30 85,55 78,75 L22,75 C15,55 18,30 25,25 Z"/>
-                        <path d="M 50,30 L 50,75 M 35,28 L 35,75 M 65,28 L 65,75"/>
-                        <path d="M 15,75 C 25,70 75,70 85,75 L 80,95 C 65,90 35,90 20,95 Z" stroke-dasharray="2,2"/>
-                        <line x1="22" y1="75" x2="20" y2="95" />
-                        <line x1="78" y1="75" x2="80" y2="95" />
-                    </svg>`
-            },
-            ortho: {
-                title: "Arch Alignment Wire Study",
-                category: "Orthodontic Geometries",
-                specimen: "Specimen #O-9",
-                medium: "India Ink & Steel-Teal Watercolor Inlays",
-                rec: "Blueprint Dots Grid Layout",
-                desc: "Technical clinical alignment mapping tracking multi-bracket force tensions along the upper jawline. Ideal for orthodontic training and aesthetic design study.",
-                svg: `<svg class="w-64 h-64 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2">
-                        <path d="M 10,50 Q 50,15 90,50 Q 50,85 10,50 Z" stroke-dasharray="3,3" stroke="#C5A880"/>
-                        <rect x="20" y="38" width="10" height="12" rx="2" transform="rotate(-20 20 38)" />
-                        <rect x="35" y="30" width="12" height="14" rx="2" transform="rotate(-10 35 30)" />
-                        <rect x="52" y="30" width="12" height="14" rx="2" transform="rotate(10 52 30)" />
-                        <rect x="70" y="38" width="10" height="12" rx="2" transform="rotate(20 70 38)" />
-                        <path d="M 15,48 Q 50,34 85,48" stroke="#1abc9c" stroke-width="2"/>
-                        <rect x="23" y="44" width="4" height="4" fill="#C5A880"/>
-                        <rect x="39" y="38" width="4" height="4" fill="#C5A880"/>
-                        <rect x="56" y="38" width="4" height="4" fill="#C5A880"/>
-                        <rect x="72" y="44" width="4" height="4" fill="#C5A880"/>
-                    </svg>`
-            },
-            vintage: {
-                title: "18th Century Dental Key Sketch",
-                category: "Vintage Instruments",
-                specimen: "Specimen #V-11",
-                medium: "Carbon Ink Tones with Aged Wash Overlay",
-                rec: "Vintage Cream Raw Blank Cover",
-                desc: "An analytical study of ancient medical equipment. Highlights structural load points on historical tooth wrenches prior to the modern dental elevator discovery.",
-                svg: `<svg class="w-64 h-64 text-slate-800" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1">
-                        <path d="M 15,30 L 35,30 M 35,20 L 35,80 M 35,50 L 80,50 L 85,40 L 75,35" stroke="currentColor" stroke-width="2" />
-                        <ellipse cx="15" cy="30" rx="3" ry="10" fill="none" stroke="currentColor" />
-                        <path d="M 80,50 C 85,60 70,65 65,55" />
-                        <path d="M 45,70 Q 50,85 65,75 T 85,85" stroke="#C5A880" stroke-width="1" />
-                    </svg>`
             }
-        };
+            updateDisplay();
+        }
 
-        function filterGallery(category) {
-            // Update filter buttons styling
-            const buttons = document.querySelectorAll('.gallery-filter-btn');
-            buttons.forEach(btn => {
-                btn.className = "gallery-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border border-gray-200 text-gray-600 hover:border-dental-slate transition-all";
-            });
-            event.currentTarget.className = "gallery-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border border-dental-slate bg-dental-slate text-white transition-all";
+        function calculate() {
+            if (!previousExpression || shouldResetDisplay) return;
 
-            // Hide/Show cards
-            const cards = document.querySelectorAll('.gallery-card');
-            cards.forEach(card => {
-                if (category === 'all' || card.classList.contains(category)) {
-                    card.style.display = 'block';
+            const fullExpr = previousExpression + displayValue;
+            try {
+                // Safe basic evaluation using Function instead of eval to prevent global state leaks
+                // and parse properly. Sanitization check: only allow digits, arithmetic operations, and decimals.
+                const sanitizedExpr = fullExpr.replace(/[^0-9+\-*/.]/g, '');
+                
+                // Solve
+                let result = new Function(`return (${sanitizedExpr})`)();
+
+                // Format decimals
+                if (result !== undefined && !isNaN(result)) {
+                    if (result.toString().includes('.')) {
+                        result = parseFloat(result.toFixed(8)); // Avoid JS floating precision issues
+                    }
+                    
+                    // Update history
+                    history.push({
+                        expr: fullExpr,
+                        result: result.toString()
+                    });
+                    
+                    // Keep history capped at 30 items
+                    if (history.length > 30) history.shift();
+                    
+                    localStorage.setItem('calcHistory', JSON.stringify(history));
+                    updateHistoryBadge();
+
+                    displayValue = result.toString();
+                    previousExpression = fullExpr + ' =';
+                    shouldResetDisplay = true;
                 } else {
-                    card.style.display = 'none';
+                    displayValue = 'Error';
                 }
-            });
+            } catch (err) {
+                displayValue = 'Error';
+            }
+            updateDisplay();
         }
 
-        function openLightbox(itemKey) {
-            const data = portfolioDb[itemKey];
-            if(!data) return;
+        // Physical Keyboard Input Handling
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            
+            if (/[0-9]/.test(key)) {
+                inputNum(key);
+            } else if (key === '.') {
+                inputDecimal();
+            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                inputOperator(key);
+            } else if (key === 'Enter' || key === '=') {
+                event.preventDefault(); // Prevent button triggering on standard action
+                calculate();
+            } else if (key === 'Backspace') {
+                backspace();
+            } else if (key === 'Escape' || key.toLowerCase() === 'c') {
+                clearDisplay();
+            } else if (key === '%') {
+                inputPercent();
+            }
+        });
 
-            document.getElementById('lightboxTitle').innerText = data.title;
-            document.getElementById('lightboxCategory').innerText = data.category;
-            document.getElementById('lightboxSpecimen').innerText = data.specimen;
-            document.getElementById('lightboxDesc').innerText = data.desc;
-            document.getElementById('lightboxMedium').innerText = data.medium;
-            document.getElementById('lightboxRec').innerText = data.rec;
-            document.getElementById('lightboxSVG').innerHTML = data.svg;
-
-            document.getElementById('portfolioLightbox').classList.remove('hidden');
-        }
-
-        function closeLightbox() {
-            document.getElementById('portfolioLightbox').classList.add('hidden');
-        }
-
-        function buyArtPiece() {
-            alert("Enquiry Recorded. Our clinical print shop will reach out shortly regarding limited-run architectural paper configurations available for this illustration.");
-        }
-
-
-        // 4. Form Submission Handling
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            alert("Perfect! Your customized institution proposal request was successfully transferred to our sketch engineers. Expect structural preview layouts in your inbox within 24 working hours.");
-            document.getElementById('contactForm').reset();
-        }
+        // Initialize state UI
+        updateHistoryBadge();
     </script>
 </body>
 </html>
