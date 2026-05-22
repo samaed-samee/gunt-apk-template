@@ -1,0 +1,40 @@
+name: Build Android APK
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.x'
+          channel: 'stable'
+
+      - name: Configure App Metadata (Icon, Package, Name)
+        run: |
+          flutter pub get
+          APP_NAME=$(node -e "console.log(require('./assets/config.json').appName)")
+          PACKAGE_NAME=$(node -e "console.log(require('./assets/config.json').packageName)")
+          
+          flutter pub run rename setBundleId --targets android --value "$PACKAGE_NAME"
+          flutter pub run rename setAppName --targets android --value "$APP_NAME"
+          flutter pub run flutter_launcher_icons:main
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
