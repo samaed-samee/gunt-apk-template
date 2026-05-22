@@ -1,398 +1,310 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Calculator</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon Particle Input</title>
     <style>
+        :root {
+            --bg-color: #050505;
+            --accent-color: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.5);
+            --input-bg: rgba(255, 255, 255, 0.03);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
         }
-        .calc-btn {
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
         }
-        .calc-btn:active {
-            transform: scale(0.92);
+
+        .ui-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
         }
-        /* Hide scrollbar for history list */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+
+        input {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 18px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 16px;
+            color: var(--text-color);
+            text-align: center;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            font-family: var(--font-main);
+            letter-spacing: 1px;
+        }
+
+        input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-glow);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hide the actual text visually but keep it for accessibility/typing */
+        /* The particles will represent the text */
+        .particle-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
     </style>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+</head><body >
 
-    <div class="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800/80 overflow-hidden flex flex-col h-[720px] transition-all duration-300">
-        
-        <!-- Header Controls -->
-        <div class="flex items-center justify-between px-6 pt-6 pb-2 z-10">
-            <!-- Theme Toggle -->
-            <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200" title="Toggle Theme">
-                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
-            </button>
+    <canvas id="canvas" width="719" height="1338" style="width: 411px; height: 765px;"></canvas>
 
-            <!-- Title -->
-            <span class="text-xs font-semibold tracking-widest text-slate-400 dark:text-slate-500 uppercase">Gunt AI Calc</span>
-
-            <!-- History Toggle -->
-            <button id="history-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 relative" title="History">
-                <i data-lucide="history" class="w-5 h-5"></i>
-                <span id="history-badge" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-indigo-500 rounded-full hidden"></span>
-            </button>
+    <div class="ui-container" data-gunt-id="gunt-1">
+        <div class="input-wrapper" data-gunt-id="gunt-2" style="transform: none; left: 2.71375px; top: 106.269px;">
+            <input type="text" id="textInput" placeholder="Type something..." autocomplete="off">
+            <div class="hint" data-gunt-id="gunt-3">Interactive Particle Experience</div>
         </div>
-
-        <!-- Display Area -->
-        <div class="flex-1 flex flex-col justify-end items-end px-6 pb-4 select-none">
-            <!-- Previous calculation/expression -->
-            <div id="expression" class="text-slate-400 dark:text-slate-500 text-lg font-medium tracking-wide min-h-[1.75rem] max-w-full overflow-x-auto whitespace-nowrap no-scrollbar mb-1"></div>
-            <!-- Main Input/Result -->
-            <div id="display" class="text-slate-800 dark:text-slate-100 text-5xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150">0</div>
-        </div>
-
-        <!-- Sliding History Panel -->
-        <div id="history-panel" class="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md transform translate-y-full transition-transform duration-300 ease-out z-20 flex flex-col">
-            <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-800">
-                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                    <i data-lucide="history" class="w-5 h-5 text-indigo-500"></i> History
-                </h3>
-                <div class="flex gap-2">
-                    <button id="clear-history" class="text-xs font-semibold text-rose-500 hover:text-rose-600 dark:text-rose-400 dark:hover:text-rose-300 px-3 py-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all">
-                        Clear All
-                    </button>
-                    <button id="close-history" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="history-list" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
-                <!-- Items injected dynamically -->
-                <div class="text-center text-slate-400 dark:text-slate-500 my-auto py-12">
-                    <i data-lucide="archive" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
-                    No calculations yet
-                </div>
-            </div>
-        </div>
-
-        <!-- Buttons Panel / Grid -->
-        <div class="bg-slate-50/80 dark:bg-slate-900/40 border-t border-slate-100 dark:border-slate-800 p-6 grid grid-cols-4 gap-3.5">
-            <!-- Row 1: Memory & Helpers -->
-            <button onclick="clearDisplay()" class="calc-btn col-span-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold text-xl rounded-2xl py-4 flex items-center justify-center">AC</button>
-            <button onclick="backspace()" class="calc-btn bg-slate-200/50 hover:bg-slate-200 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium text-xl rounded-2xl py-4 flex items-center justify-center">
-                <i data-lucide="delete" class="w-6 h-6"></i>
-            </button>
-            <button onclick="inputPercent()" class="calc-btn bg-slate-200/50 hover:bg-slate-200 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium text-xl rounded-2xl py-4 flex items-center justify-center">%</button>
-            <button onclick="inputOperator('/')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">÷</button>
-
-            <!-- Row 2 -->
-            <button onclick="inputNum('7')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">7</button>
-            <button onclick="inputNum('8')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">8</button>
-            <button onclick="inputNum('9')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">9</button>
-            <button onclick="inputOperator('*')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">×</button>
-
-            <!-- Row 3 -->
-            <button onclick="inputNum('4')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">4</button>
-            <button onclick="inputNum('5')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">5</button>
-            <button onclick="inputNum('6')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">6</button>
-            <button onclick="inputOperator('-')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">−</button>
-
-            <!-- Row 4 -->
-            <button onclick="inputNum('1')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">1</button>
-            <button onclick="inputNum('2')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">2</button>
-            <button onclick="inputNum('3')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">3</button>
-            <button onclick="inputOperator('+')" class="calc-btn bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-950/60 font-semibold text-2xl rounded-2xl py-4 flex items-center justify-center">+</button>
-
-            <!-- Row 5 -->
-            <button onclick="toggleSign()" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">±</button>
-            <button onclick="inputNum('0')" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">0</button>
-            <button onclick="inputDecimal()" class="calc-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700/80 font-semibold text-2xl rounded-2xl py-4 shadow-sm border border-slate-100/50 dark:border-slate-800/40 flex items-center justify-center">.</button>
-            <button onclick="calculate()" class="calc-btn bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white font-bold text-3xl rounded-2xl py-4 flex items-center justify-center shadow-lg shadow-indigo-500/30 dark:shadow-indigo-500/20">=</button>
-        </div>
-
     </div>
 
     <script>
-        // Init Lucide Icons
-        lucide.createIcons();
-
-        // State variables
-        let displayValue = '0';
-        let previousExpression = '';
-        let shouldResetDisplay = false;
-        let history = JSON.parse(localStorage.getItem('calcHistory')) || [];
-
-        const displayEl = document.getElementById('display');
-        const expressionEl = document.getElementById('expression');
-        const historyPanel = document.getElementById('history-panel');
-        const historyList = document.getElementById('history-list');
-        const historyBadge = document.getElementById('history-badge');
-
-        // Dark/Light Theme Handler
-        const themeToggleBtn = document.getElementById('theme-toggle');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const input = document.getElementById('textInput');
         
-        // Detect and set theme
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        // Virtual canvas for text sampling
+        const vCanvas = document.createElement('canvas');
+        const vCtx = vCanvas.getContext('2d', { willReadFrequently: true });
 
-        themeToggleBtn.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
-            }
-        });
+        let width, height;
+        let particles = [];
+        let mouse = { x: -1000, y: -1000, radius: 80 };
+        
+        const config = {
+            particleColor: '#00f2ff',
+            particleSize: 1.5,
+            sampleRate: 4, // Lower = more particles (performance cost)
+            ease: 0.08,
+            friction: 0.9,
+            floatAmplitude: 1.5,
+            floatSpeed: 0.05
+        };
 
-        // Sliding History Panel logic
-        const historyToggleBtn = document.getElementById('history-toggle');
-        const closeHistoryBtn = document.getElementById('close-history');
-        const clearHistoryBtn = document.getElementById('clear-history');
-
-        historyToggleBtn.addEventListener('click', () => {
-            historyPanel.classList.remove('translate-y-full');
-            updateHistoryUI();
-        });
-
-        closeHistoryBtn.addEventListener('click', () => {
-            historyPanel.classList.add('translate-y-full');
-        });
-
-        clearHistoryBtn.addEventListener('click', () => {
-            history = [];
-            localStorage.setItem('calcHistory', JSON.stringify(history));
-            updateHistoryUI();
-        });
-
-        function updateHistoryBadge() {
-            if (history.length > 0) {
-                historyBadge.classList.remove('hidden');
-            } else {
-                historyBadge.classList.add('hidden');
-            }
-        }
-
-        function updateHistoryUI() {
-            updateHistoryBadge();
-            if (history.length === 0) {
-                historyList.innerHTML = `
-                    <div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 h-full py-12">
-                        <i data-lucide="archive" class="w-12 h-12 mb-3 opacity-30"></i>
-                        <p class="text-sm font-medium">No calculation history</p>
-                    </div>
-                `;
-                lucide.createIcons();
-                return;
+        class Particle {
+            constructor(x, y) {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.destX = x;
+                this.destY = y;
+                this.vx = 0;
+                this.vy = 0;
+                this.baseX = x;
+                this.baseY = y;
+                this.size = config.particleSize;
+                this.angle = Math.random() * Math.PI * 2;
             }
 
-            historyList.innerHTML = history.map((item, index) => `
-                <div onclick="recallHistory(${index})" class="group cursor-pointer p-3.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 border border-transparent hover:border-slate-100 dark:hover:border-slate-800 transition-all text-right">
-                    <div class="text-xs text-slate-400 dark:text-slate-500 mb-1 group-hover:text-indigo-500 transition-colors duration-150">${item.expr}</div>
-                    <div class="text-lg font-bold text-slate-700 dark:text-slate-200">${item.result}</div>
-                </div>
-            `).reverse().join('');
-        }
+            update() {
+                // Float motion
+                this.angle += config.floatSpeed;
+                const floatX = Math.cos(this.angle) * config.floatAmplitude;
+                const floatY = Math.sin(this.angle) * config.floatAmplitude;
 
-        function recallHistory(index) {
-            const item = history[index];
-            displayValue = item.result;
-            previousExpression = item.expr;
-            shouldResetDisplay = true;
-            updateDisplay();
-            historyPanel.classList.add('translate-y-full');
-        }
-
-        // Calculator Mechanics
-        function updateDisplay() {
-            // Adjust size depending on digits
-            if (displayValue.length > 15) {
-                displayEl.className = 'text-slate-800 dark:text-slate-100 text-2xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150';
-            } else if (displayValue.length > 9) {
-                displayEl.className = 'text-slate-800 dark:text-slate-100 text-3xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150';
-            } else {
-                displayEl.className = 'text-slate-800 dark:text-slate-100 text-5xl font-bold tracking-tight max-w-full overflow-x-auto whitespace-nowrap no-scrollbar transition-all duration-150';
-            }
-
-            // Simple visual improvements for division/multiplication in previous expression display
-            const visualExpr = previousExpression
-                .replace(/\*/g, ' × ')
-                .replace(/\//g, ' ÷ ')
-                .replace(/\+/g, ' + ')
-                .replace(/\-/g, ' − ');
-
-            expressionEl.innerText = visualExpr;
-            displayEl.innerText = displayValue.replace(/\*/g, '×').replace(/\//g, '÷');
-        }
-
-        function clearDisplay() {
-            displayValue = '0';
-            previousExpression = '';
-            shouldResetDisplay = false;
-            updateDisplay();
-        }
-
-        function backspace() {
-            if (shouldResetDisplay) {
-                clearDisplay();
-                return;
-            }
-            if (displayValue.length > 1) {
-                displayValue = displayValue.slice(0, -1);
-            } else {
-                displayValue = '0';
-            }
-            updateDisplay();
-        }
-
-        function inputPercent() {
-            try {
-                const currentVal = parseFloat(displayValue);
-                if (!isNaN(currentVal)) {
-                    displayValue = (currentVal / 100).toString();
-                    updateDisplay();
-                }
-            } catch (err) {
-                displayValue = 'Error';
-                updateDisplay();
-            }
-        }
-
-        function toggleSign() {
-            if (displayValue === '0' || displayValue === 'Error') return;
-            if (displayValue.startsWith('-')) {
-                displayValue = displayValue.slice(1);
-            } else {
-                displayValue = '-' + displayValue;
-            }
-            updateDisplay();
-        }
-
-        function inputNum(num) {
-            if (displayValue === '0' || shouldResetDisplay || displayValue === 'Error') {
-                displayValue = num;
-                shouldResetDisplay = false;
-            } else {
-                displayValue += num;
-            }
-            updateDisplay();
-        }
-
-        function inputDecimal() {
-            if (shouldResetDisplay) {
-                displayValue = '0.';
-                shouldResetDisplay = false;
-                updateDisplay();
-                return;
-            }
-            if (!displayValue.includes('.')) {
-                displayValue += '.';
-                updateDisplay();
-            }
-        }
-
-        function inputOperator(operator) {
-            const lastChar = displayValue.slice(-1);
-            
-            // If standard operations are clicked
-            if (shouldResetDisplay) {
-                previousExpression = displayValue + operator;
-                shouldResetDisplay = false;
-                displayValue = '0';
-            } else {
-                if (['+', '-', '*', '/'].includes(lastChar)) {
-                    displayValue = displayValue.slice(0, -1) + operator;
-                } else {
-                    if (previousExpression && !shouldResetDisplay) {
-                        previousExpression += displayValue + operator;
-                    } else {
-                        previousExpression = displayValue + operator;
-                    }
-                    displayValue = '0';
-                }
-            }
-            updateDisplay();
-        }
-
-        function calculate() {
-            if (!previousExpression || shouldResetDisplay) return;
-
-            const fullExpr = previousExpression + displayValue;
-            try {
-                // Safe basic evaluation using Function instead of eval to prevent global state leaks
-                // and parse properly. Sanitization check: only allow digits, arithmetic operations, and decimals.
-                const sanitizedExpr = fullExpr.replace(/[^0-9+\-*/.]/g, '');
+                // Spring physics to target
+                const dx = (this.destX + floatX) - this.x;
+                const dy = (this.destY + floatY) - this.y;
                 
-                // Solve
-                let result = new Function(`return (${sanitizedExpr})`)();
+                this.vx += dx * config.ease;
+                this.vy += dy * config.ease;
+                this.vx *= config.friction;
+                this.vy *= config.friction;
 
-                // Format decimals
-                if (result !== undefined && !isNaN(result)) {
-                    if (result.toString().includes('.')) {
-                        result = parseFloat(result.toFixed(8)); // Avoid JS floating precision issues
-                    }
-                    
-                    // Update history
-                    history.push({
-                        expr: fullExpr,
-                        result: result.toString()
-                    });
-                    
-                    // Keep history capped at 30 items
-                    if (history.length > 30) history.shift();
-                    
-                    localStorage.setItem('calcHistory', JSON.stringify(history));
-                    updateHistoryBadge();
+                this.x += this.vx;
+                this.y += this.vy;
 
-                    displayValue = result.toString();
-                    previousExpression = fullExpr + ' =';
-                    shouldResetDisplay = true;
-                } else {
-                    displayValue = 'Error';
+                // Mouse Repulsion
+                const mdx = this.x - mouse.x;
+                const mdy = this.y - mouse.y;
+                const dist = Math.sqrt(mdx * mdx + mdy * mdy);
+                if (dist < mouse.radius) {
+                    const force = (mouse.radius - dist) / mouse.radius;
+                    this.vx += (mdx / dist) * force * 5;
+                    this.vy += (mdy / dist) * force * 5;
                 }
-            } catch (err) {
-                displayValue = 'Error';
             }
-            updateDisplay();
+
+            draw() {
+                ctx.fillStyle = config.particleColor;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        // Physical Keyboard Input Handling
-        document.addEventListener('keydown', (event) => {
-            const key = event.key;
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * window.devicePixelRatio;
+            canvas.height = height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+        }
+
+        function getTextPixels(text) {
+            const fontSize = Math.min(width / (text.length * 0.6), 120);
+            vCanvas.width = width;
+            vCanvas.height = height;
             
-            if (/[0-9]/.test(key)) {
-                inputNum(key);
-            } else if (key === '.') {
-                inputDecimal();
-            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
-                inputOperator(key);
-            } else if (key === 'Enter' || key === '=') {
-                event.preventDefault(); // Prevent button triggering on standard action
-                calculate();
-            } else if (key === 'Backspace') {
-                backspace();
-            } else if (key === 'Escape' || key.toLowerCase() === 'c') {
-                clearDisplay();
-            } else if (key === '%') {
-                inputPercent();
+            vCtx.fillStyle = 'white';
+            vCtx.font = `bold ${fontSize}px ${getComputedStyle(document.body).fontFamily}`;
+            vCtx.textAlign = 'center';
+            vCtx.textBaseline = 'middle';
+            vCtx.fillText(text, width / 2, height / 2);
+
+            const imageData = vCtx.getImageData(0, 0, width, height).data;
+            const points = [];
+
+            for (let y = 0; y < height; y += config.sampleRate) {
+                for (let x = 0; x < width; x += config.sampleRate) {
+                    const index = (y * width + x) * 4;
+                    if (imageData[index + 3] > 128) {
+                        points.push({ x, y });
+                    }
+                }
             }
+            return points;
+        }
+
+        function updateParticles() {
+            const text = input.value;
+            const points = getTextPixels(text);
+            
+            if (points.length === 0) {
+                // Fade out particles if input is empty
+                particles = []; 
+                return;
+            }
+
+            // Match particle count to pixel count
+            if (particles.length < points.length) {
+                for (let i = particles.length; i < points.length; i++) {
+                    particles.push(new Particle(points[i].x, points[i].y));
+                }
+            } else if (particles.length > points.length) {
+                particles.splice(points.length);
+            }
+
+            // Update target destinations
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].destX = points[i].x;
+                particles[i].destY = points[i].y;
+                particles[i].baseX = points[i].x;
+                particles[i].baseY = points[i].y;
+            }
+        }
+
+        function animate() {
+            // Clear with slight trail effect
+            ctx.fillStyle = '#050505';
+            ctx.fillRect(0, 0, width, height);
+
+            // Neon glow effect
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = config.particleColor;
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            
+            ctx.shadowBlur = 0;
+            requestAnimationFrame(animate);
+        }
+
+        // Events
+        window.addEventListener('resize', resize);
+        
+        input.addEventListener('input', updateParticles);
+        
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
         });
 
-        // Initialize state UI
-        updateHistoryBadge();
+        window.addEventListener('touchstart', (e) => {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            mouse.x = e.touches[0].clientX;
+            mouse.y = e.touches[0].clientY;
+        }, { passive: false });
+
+        window.addEventListener('touchend', () => {
+            mouse.x = -1000;
+            mouse.y = -1000;
+        });
+
+        // Initialize
+        resize();
+        animate();
+        
+        // Default text to start
+        input.value = "GUNT AI";
+        updateParticles();
+
     </script>
+
 </body>
-</html>
